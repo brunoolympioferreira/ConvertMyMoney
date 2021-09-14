@@ -6,6 +6,8 @@ const app = express()
 const path = require('path') 
 //importando convert
 const convert = require('./lib/convert')
+//importando api bcb
+const apiBCB = require('./lib/api.bcb')
 
 //setando o ejs(estudar sobre isso)
 app.set('view engine', 'ejs')
@@ -14,8 +16,11 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
 
 //renderizando a pagina home
-app.get('/', (req, res) => {
-    res.render('home')
+app.get('/', async (req, res) => {
+    const cotacao = await apiBCB.getCotacao()
+    res.render('home', {
+        cotacao
+    })
 })
 
 //renderizando a pagina cotacao
